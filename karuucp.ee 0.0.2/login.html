@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breaking San Andreas</title>
+  <link rel="icon" href="assets/bsa.png" type="image/png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="bg-[#fafafa] flex items-center justify-center h-screen">
+
+  <div class="bg-white shadow-xl rounded-xl p-10 text-center w-[360px]">
+    <h2 class="text-2xl font-semibold mb-6">Sisse logimis viisid</h2>
+
+    <div id="g_id_onload"
+         data-client_id="360897032051-8ti8b26bqldliujf42doq8phsfr1hrmj.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
+
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="pill"
+         data-logo_alignment="left">
+    </div>
+  </div>
+
+  <script>
+    function handleCredentialResponse(response) {
+      const data = parseJwt(response.credential);
+      localStorage.setItem('user', JSON.stringify(data)); // Store user data
+      window.location.href = "index.html"; // Redirect after login
+    }
+
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64).split('').map(c =>
+          '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        ).join('')
+      );
+      return JSON.parse(jsonPayload);
+    }
+  </script>
+</body>
+</html>
